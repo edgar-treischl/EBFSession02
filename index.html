@@ -1,0 +1,704 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>02 EBF Methoden Bootcamp</title>
+
+		<meta name="description" content="Empirische Bildungsforschung">
+		<meta name="author" content="Edgar Treischl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/tomorrow.css">
+
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		<body oncontextmenu="return false;">
+			<style type ="text/css" >
+				.footer{ 
+					position: fixed;     
+					text-align: center;    
+					bottom: -600px; 
+					width: 100%;
+				}  
+			 </style>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background-image="media/hogwarts.gif">
+					<h3><font color="#FFFFF">EBF Session 2</font> </h3>
+					<h2 style="font-family:Harry P"><font color="#FFFFF">Harry Otter and the Regression Bootcamp</font> </h2>
+					<p>
+						<small> <a href="mailto:edgar.treischl@fau.de"><i class="fa fa-envelope"></i> Dr. Edgar Treischl <br>FAU Nürnberg-Erlangen</a> 
+						</small>
+					</p>
+				</section>
+
+
+
+
+
+				<section>
+					<h3>Ablauf</h3>
+					<ul>
+						<li>Grundidee der linearen Regression</li>
+						<li>Interpretation und KQ Schätzung</li>
+						<li>Multivariate Analysen</li>
+						<li>Güte der Vorhersage: R²</li>
+						<li>Regression App</li>
+					</ul><br>
+					<audio controls>
+						<source src="audio/a1.mp3" type="audio/mpeg">
+						  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h5>Online Linear Regression App</h5>
+					 <a href="http://rstudio.edgar-treischl.de/shiny/ols2/" target="_blank">
+						<img border="0" alt="" src="media/menu.png" width="75%">
+						 </a><br>
+					<audio controls>
+					   <source src="audio/a2.mp3" type="audio/mpeg">
+							 Your browser does not support the audio element.
+				   </audio> <br>
+				  </section>
+
+				  <section>
+					<p>Die Online App dient also der Vertiefung der linearen Regression. Ist die App auf der nächsten Seite nicht sichtbar, kannst du Sie auch
+						in einem neuen Fenster laden und an den enstprechenden Stellen im Online Modul darauf zurückgreifen.
+					</p> <br> <br>
+					<small><a href="http://rstudio.edgar-treischl.de/shiny/ols2/" target="_blank"><i class="fa fa-link"></i>Click to open in a new tab.</button></a>
+					</small>
+				</section>
+
+				  <section data-background-iframe="http://rstudio.edgar-treischl.de/shiny/ols2/" data-background-interactive>
+				  </section>
+
+
+
+				
+				<section data-background="media/hp_clouds.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h2> <font color="#FFFFF">Die Grundidee der Regression</font> </h2>
+					<p> <font color="#FFFFF">A dark cloud is rising! </font> </p> &#128519;
+
+				</section>
+
+				<section>
+					<h3>Was untersucht die EBF?</h3>
+					<ul>
+						<li>Einfluss von X auf die Noten (Kompetenzen) von Schülerinnen/Schüler (SuS)</li>
+						<li>Einfluss von X auf den Übergang (Ja/Nein) / Erreichen eines Schulabschlusses (Ja/Nein) von SuS</li>
+						<li>Einfluss der Ausgestaltung des Bildungssystems (Klassengröße, G8/G9) auf Y</li>
+						<li>(Kausale) Effekt von X auf Y</li>
+					</ul>  <br>
+					<audio controls>
+						<source src="audio/a3.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+	
+				</section>
+
+				<section data-background-image="media/b1.jpg">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h4> <font color="#FFFFF">Große Eltern, große Kinder?</font> </h4>
+				</section>
+
+				<section>
+					<h5>Francis Galton</h5>
+					 <a href="https://de.wikipedia.org/wiki/Francis_Galton" target="_blank">
+						<img border="0" alt="" src="media/Galton.jpg" width="35%">
+						 </a><br>
+					<audio controls>
+					   <source src="audio/a4.mp3" type="audio/mpeg">
+							 Your browser does not support the audio element.
+				   </audio> <br>
+				  </section>
+
+				  <section>
+					<h5>Galton board</h5>
+					 <a href="https://coolbutuseless.github.io/package/chipmunkcore/articles/galton.html" target="_blank">
+						<img border="0" alt="Hallo" src="media/galtonboard.gif" width="50%">
+						 </a><br>
+						 <small style="color:slategray">Source: R chipmunkcore package </small>
+				  </section>
+
+
+				<section>
+					<h4>Die Daten</h4>
+					<img src="media/pR1.png" width = "90%" alt=""> <br>
+					<audio controls>
+						<source src="audio/a5.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+
+
+
+				<section>
+					<p> Regressieren heißt zurückführen: Eine abhängige metrische Variable (AV wie bspw. Körpergröße, die Schulleistung, etc.) wird auf eine 
+						oder mehrere unabhängige Variable (UV wie die Körpergröße der Eltern) zurückgeführt (sprich: regressiert).</p>
+				 </section>
+
+				 <section>
+					<p>Der Zusammenhang zwischen der UV und der AV wird durch eine Funktionsgerade beschrieben. Wir tragen alle Werte der UV
+						und der AV in einem Diagramm ab und legen eine Gerade in die Datenwolke, welche den Zusammenhang zwischen UV and AV möglichst
+						präzise beschreibt.
+					</p>
+				  </section>
+
+
+				<section>
+					<h4>Die Datenwolke</h4>
+					<img src="media/1.png" width = "90%" alt=""> <br>
+					<audio controls>
+						<source src="audio/a6.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h4>Welche Funktionsgerade?</h4>
+					<img src="media/pR3.png" width = "90%" alt=""> <br>
+					<audio controls>
+						<source src="audio/a7.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+
+				<section>
+					<h4>Welche Funktionsgerade darf's denn sei?</h4>
+					<img src="media/pR4.png" width = "80%" alt=""> <br>
+					<audio controls>
+						<source src="audio/a8.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+
+				<section>
+					<h4>Eine Funktionsgerade mit kleinem Fehler!</h4>
+					<img src="media/pR5.png" width = "80%" alt=""> <br>
+					<audio controls>
+						<source src="audio/a9.mp3" type="audio/mpeg"> 
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h5>Wir halten fest:</h5>
+					 <ul>
+					   <li>Y Achsenabschnitt: Wo beginnt die Gerade?</li>
+					   <li>Steigungskoeffizient: Wie steil oder flach verläuft die Gerade?</li>
+					   <li>Fehlerterm (Residuum): Vorhersage ist nicht perfekt, wir machen also einen Fehler.</li>
+					 </ul>
+				</section>
+
+				   <section>
+					 <h5>Zusammenfassung grafisch</h5>
+					 <img
+					   src="media/RegO.png"
+					   width="75%"
+					   alt=""
+					 /> <br>
+					 <audio controls>
+						<source src="audio/a10.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				   </section>
+
+
+
+				
+				<section data-background="media/Ron.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h5> <font color="white">Now you'll have to grit your teeth!  &#x1F648; </font> </h5>
+					</section>
+
+
+
+					<section data-background="media/sirius.gif">
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<h2> <font color="white"> Interpretation und KQ Schätzung</font> </h2>
+					</section>
+
+					<section>
+						<h5>kochrezept Interpretation</h5>
+						  <center>y = &beta;&#xb0; + &beta;&#xb9; x&#xb9; &#x2b; u</center>
+						  <ul>
+							  <li>&beta;&#xb0;: Durchschnittlicher Wert der abhängigen Variable y, wenn alle anderen Einflussgrößen gleich 0 sind. (y-Achsensabschnitt oder Intercept)</li>
+							  <li>&beta;&#xb9;: Verändert sich die unabhängige Variable X um eine Einheit, so verändert sich die abhängige Variable um β1 Einheiten. (Steigung) </li>
+							  <li>u: Fehlerterm (Residuum)</li>
+						   </ul>
+					  </section>
+	
+
+
+				<section>
+					<h5>Beispiel Regressionsoutput</h5>
+					<img src="media/pR6.png" width=100% alt=""><br>
+					<audio controls>
+						<source src="audio/a11.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+
+				<section>
+					<h5>Interpretation grafisch</h5>
+					<img src="media/pR7.png" width=95% alt=""><br>
+					<audio controls>
+						<source src="audio/a12.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h5>Sind die Effekte signifikant?</h5>
+					<img src="media/pR15.png" width=75% alt=""><br>
+					<audio controls>
+						<source src="audio/a13.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+
+				<section data-background="media/Nagini2.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h5> <font color="white">Now, it's your turn 🐍 !</font> </h5>
+				</section>
+
+
+				<section>
+					<medium>Kannst Du mit der Online App und der Pisa-Datenstichprobe den Effekt der Klassengrösse (X) auf die Lesekompetenz (Y) vorhersagen und interpretieren? <br>
+						(Reiter 3 Regression)</medium>
+				</section>
+
+
+				  <section data-background-iframe="http://rstudio.edgar-treischl.de/shiny/ols2/" data-background-interactive>
+				  </section>
+
+				<section data-background="media/severus.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h5> <font color="white">Grrr, next time you won't get off so easy 😉 </font> </h5>
+				</section>
+
+
+				  <section>
+					<p>Bei der Regression soll die Gerade den Funktionszusammenhang so gut wie möglich beschreiben. Hierfür nutzen wir den KQ Schätzer.</p>
+				</section>
+
+
+				  <section>
+					  <medium>Die Gerade wird so durch die Punktewolke gelegt, dass die Summe der quadrierten Residuen möglichst klein ist. Hierfür
+						  wird die Methode der kleinsten Quadrate (KQ Schätzer) eingesetzt, häufig auch Ordinary Least Squares (OLS) genannt.</medium>
+				 </section>
+
+
+
+			  
+				  <section>
+					  <h5>KQ Schätzer</h5>
+					  <ul>
+						  <li>Residuen werden dabei quadriert, weil …</li>
+						  <li>... sich sonst positive und negative Abweichungen ausgleichen.</li>
+						  <li>... stärkere Abweichungen stärker in die Berechnung einfließen sollen.</li>
+					  </ul>
+					  <medium>Der Erwartungswert der Residuen ist gleich 0, d.h. im Durchschnitt sind die Fehler 0: E(u)=0.</medium> 
+				  </section>
+
+
+				  <section>
+					<h5><font color="#FFD700">Math Wizardy: The Slope spell</font></h5>
+					<img src="media/pR11.png" width=75% alt=""><br>
+					<audio controls>
+						<source src="audio/a14.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h5><font color="#FFD700">Math Wizardy: The Intercept spell</font></h5>
+					<img src="media/pR12.png" width=75% alt=""><br>
+					<audio controls>
+						<source src="audio/a15.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+				  
+					<section data-background="media/Dobby.gif">
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<h5> <font color="white">That's the magic behind it &#128518;</font> </h5>
+					</section>
+
+
+
+
+
+			
+
+
+
+				<section>
+					<h2>Multivariate Analysen</h2>
+				</section>
+
+				<section>
+					<h5>Multivariate Analysen</h5>
+					<ul>
+						<li>Bivariate vs. multivariate Analysen</li>
+						<li>Funktionsgleichung wird mit weiteren Koeffizienten (Variablen) erweitert</li>
+						<li>Ceteris paribus (d.h. unter sonst gleichen Bedingungen): Der Einfluss von X auf Y kann unter Konstanthaltung weiterer Variablen berechnet werden</li>
+					  </ul>
+					<audio controls>
+						<source src="audio/a16.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio>
+					</section>
+
+					<section>
+						<h5>Spurious confounder</h5>
+						<img
+							  src="media/pR16.PNG"
+							  width="75%"
+							  alt=""/> <br>
+							  <audio controls>
+								<source src="audio/a17b.mp3" type="audio/mpeg">
+									  Your browser does not support the audio element.
+							</audio> 
+					</section>
+
+					<section>
+						<h5>Identifikation eines kausalen Effekts....</h5>
+						<ul>
+							<li>mit Hilfe der Regression: Berechnung eines Effekts durch Kontrolle beobachteter Variablen, d.h. Kontrolle aller Variablen die sowohl den Treatmentstatus (X) beeinflussen und einen Einfluss auf die abhängige Variable haben</li>
+							<li>Hoffnung: Nach Kontrolle der Variablen ist die Zuweisung des Treatmentstatus X „so gut wie zufällig“ (CIA)
+							</li>
+						</ul>
+						<audio controls>
+							<source src="audio/a17.mp3" type="audio/mpeg">
+								  Your browser does not support the audio element.
+						</audio> 
+					</section>
+
+
+
+
+	
+					<section>
+						<h5>Merke:</h5>
+						<medium>Konditionale Unabhängigkeit (conditional independence assumption, CIA): 
+							Bei der Regression muss die Annahme getroffen werden, dass nach der Kontrolle der anderen unabhängigen Variablen die Verteilung der Einheiten über die Treatment- und Kontrollgruppe 
+							in Hinblick auf die abhängige Variable so gut wie zufällig erfolgt.
+						</medium>
+					</section>
+
+
+					<section data-background="media/Voldemort.gif">
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<h5> <font color="white">Time for the last battle! <br> &#128521;</font> </h5>
+					</section>
+
+
+
+
+
+				<section>
+					<h5>Wie gut ist unsere Vorhersage?</h5>
+					<img
+						  src="media/pR10.png"
+						  width="70%"
+						  alt=""/> <br>
+						  <audio controls>
+							<source src="audio/a18.mp3" type="audio/mpeg">
+								  Your browser does not support the audio element.
+						</audio> 
+				</section>
+
+
+
+				<section data-background="media/umbridge3.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h3 style="color: white"> Oh sweetie, are you telling me that you never heard of R² before? &#x1F609; </h3>
+				</section>
+
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="zoom">
+					<h2>R²</h2>
+					<p>Die Güte der Vorhersage der Regression. Ein kurzer Auszug zum Nachlesen.</p>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;In vielen Fällen ist die Vorhersage der Regression nicht perfekt, d.h. es werden Fehler 
+						gemacht. Es handelt dabei sich um die Differenz zwischen dem vorhergesagten Wert 
+						(der Gerade) und den beobachteten Werten.&rdquo;
+					</blockquote>
+				</section>
+				
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo; R-Quadrat ist ein Indikator, der uns hilft zu beurteilen, wie groß der Fehler 
+						ist oder wie gut das Modell die Zielvariable (Outcome) erklärt.&rdquo;
+					</blockquote>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;Um R-Quadrat zu verstehen, müssen wir zuerst die 
+						Gesamtvarianz (Streuung) von X und Y uns vorstellen. Nehmen wir an, dass X gar keinen Einfluss auf Y hat, dann wäre der Beta-Koeffizient und 
+						damit die Steigung der Geraden gleich 0. &rdquo;
+					</blockquote>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;D.h. es ist egal welcher X-Wert vorliegt, wir würden immer 
+						den gleichen Y-Wert beobachten. Die Gerade wäre flach. Das einzige zur Verfügung stehende Mittel 
+						um Y vorherzusagen, wäre beispielsweise das arithmetische Mittel von X und dies ist der durchschnittliche Fehler. 
+						&rdquo;
+					</blockquote>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;Aber wir haben im Online Tool ja bereits eine Regressionslinie angepasst. 
+						Auf Grundlage der beobachteten Werte von X können wir Y also bis zu einem gewissen Grad erklären. 
+						&rdquo;
+					</blockquote>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;Wir kennen demnach die Gesamtvarianz und die erklärte Varianz. Mit diesen zwei Werten können 
+						wir R² berechnen und somit den Fehler des Modells bewerten. R² ist der Anteil (%) der Varianz von Y, der durch 
+						die Regression vorhersagbar ist. Also die erklärte Varianz geteilt durch die Gesamtvarianz. 
+						&rdquo;
+					</blockquote>
+				</section>
+
+				<section data-transition="slide" data-background="#b42041" data-background-transition="slide">
+					<blockquote cite="Rolff 1997: 34">
+						&ldquo;Grafisch und an einem Beispiel lässt sich dies leichter
+						nachvollziehen.&rdquo;
+					</blockquote>
+				</section>
+
+				<section>
+					<h4>ERROR</h4>
+					<img src="media/pR8.png" width=90% alt=""><br>
+					<audio controls>
+						<source src="audio/a19.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h4>Gesamtvarianz vs. Erklärte Varianz</h4>
+					<img src="media/pR9.png" width=90% alt=""><br>
+					<audio controls>
+						<source src="audio/a20.mp3" type="audio/mpeg">
+							  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section data-background="media/ghosts.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<h5> <font color="white">Prepare yourself, you're getting close!</font> </h5>
+				</section>
+
+				<section>
+					<medium>Kannst Du mit der Online App überprüfen, wie gut die Klassengrösse (X) die Lesekompetenz (Y) erklärt? <br>
+						(Reiter 5 - 7)</medium>
+				</section>
+
+				  <section data-background-iframe="http://rstudio.edgar-treischl.de/shiny/ols2/" data-background-interactive>
+				  </section>
+
+				<section data-background="media/Hagrid.gif">
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<p> <font color="white">Blimey, not that bad for a muggle! <br> &#128514;</font> </p>
+				</section>
+
+
+
+				<section>
+					<medium>Merke: R² ist der Anteil der erklärten Variation an der Gesamtvariation und liegt zwischen 0 und 1.</medium>
+				</section>
+
+				<section>
+					<h5>Interpretation von R²</h5>
+					  <ul>
+						<li>R² = 0: Die Regression (X) trägt nichts zur Erklärung von Y bei.</li>
+						<li>R² = 1: Die Regressionsfunktion erklärt Y perfekt (alle Punkte liegen genau auf der Geraden).</li> 
+						<li>R² = 0,2: 20% der Varianz wird durch die unabhängige(n) Variable(n) erklärt.</li> 
+					  </ul>
+				  </section>
+
+				<section>
+					<h2>Zusammenfassung</h2> 
+					<ul>
+						<li>Grundidee und Logik (multivariater) Modelle</li>
+						<li>Linear regression as the working horse of the social sciences</li>
+						<li>Interpretation der Koeffizienten und Modellgüte</li>
+					</ul> <br />
+					<audio controls>
+						<source src="audio/a21.mp3" type="audio/mpeg">
+						  Your browser does not support the audio element.
+					</audio> 
+				</section>
+
+				<section>
+					<h3 style="font-family:Harry P"><font color="black">But most importantly ...</font> </h3>
+				</section>
+
+				<section data-background="media/leviosa.gif">
+
+				</section>
+
+
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				progress: true,
+				slideNumber: true,
+				autoPlayMedia: null,
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				hash: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/highlight/highlight.js' },
+					{ src: 'node_modules/reveal.js-menu/menu.js'},
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				],
+				menu: {
+					side: 'left',
+					titleSelector: 'h1, h2',
+					hideMissingTitles: true,
+					custom: [
+					{title: 'Sessions', icon: '<i class="fa fa-link">', src: 'links.html'},
+					{title: 'Shortcuts', icon: '<i class="fa fa-keyboard">', 
+						content: '<p>Alt gedrückt halten für Zoom + Mausklick auf die entsprechende Stelle, f für Vollbild und Esc für das Verlassen des Vollbildmodus, ESC für eine Übersicht.</p>' }
+					]
+				},
+			});
+		</script>
+	</body>
+</html>
