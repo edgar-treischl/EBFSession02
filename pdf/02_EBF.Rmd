@@ -1,0 +1,414 @@
+---
+title: "EBF"
+subtitle: "Session 02: Regression Bootcamp"
+author: "Dr. Edgar Treischl"
+#institute: "RStudio, PBC"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    seal: TRUE
+    #chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      titleSlideClass: [center, middle]
+---
+
+
+```{r, include=FALSE}
+library(HistData)
+library(ggplot2)
+library(tidyverse)
+
+data(Galton)
+
+```
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+```
+
+```{r best-features, echo=FALSE}
+#search
+xaringanExtra::use_search(show_icon = TRUE, position = "top-right")
+
+xaringanExtra::style_search(match_background = "black",
+                            input_background = "white",
+                            input_border = "black",
+                            match_current_background = "green")
+
+xaringanExtra::use_tachyons()
+xaringanExtra::use_tile_view()
+xaringanExtra::use_webcam()
+
+```
+
+
+
+## Ablauf
+
+### - Grundidee der linearen Regression
+### - Interpretation und KQ Schätzung
+### - Multivariate Analysen
+### - Güte der Vorhersage: R²
+### - Regression App
+
+
+---
+
+
+class: center, middle
+
+
+<p style="font-size:125%;">Die Online App dient also der Vertiefung der linearen Regression. Ist die App auf der nächsten Seite nicht sichtbar, kannst du Sie auch in einem neuen Fenster laden und an den enstprechenden Stellen im Online Modul darauf zurückgreifen. </p> 
+
+
+
+---
+
+
+
+## Online Linear Regression App
+
+<a href="http://edgar-treischl.de:3838/olsGerman/"><img src="media/menu.png" style="width: 100%" border = "1px solid #555;" /></a>
+
+---
+
+
+#  Die Grundidee der Regression 
+
+## Was untersucht die EBF?
+
+- Einfluss von X auf die Noten (oder Kompetenzen) von Schülerinnen/Schüler (SuS)
+- Einfluss von X auf den Übergang (Ja/Nein) / Erreichen eines Schulabschlusses (Ja/Nein) von SuS
+- Einfluss der Ausgestaltung des Bildungssystems (Klassengröße, G8/G9) auf Y
+- (Kausale) Effekt von X auf Y
+- Anwendungsbeispiel der Sitzung: Haben große Eltern auch große Kinder? 
+---
+
+## Francis Galton
+
+<img src="media/Galton.jpg" style="width: 45%" border = "1px solid #555;" />
+
+---
+
+
+## Die Daten
+
+<img src="media/pR1.png" style="width: 100%" border = "1px solid #555;" />
+
+
+
+
+---
+class: center, middle
+
+<p style="font-size:125%;">Regressieren heißt zurückführen: Eine abhängige metrische Variable (AV wie bspw. Körpergröße, die Schulleistung, etc.) wird auf eine oder mehrere unabhängige Variable (UV wie die Körpergröße der Eltern) zurückgeführt (sprich: regressiert). </p> 
+
+
+<p style="font-size:125%;">Der Zusammenhang zwischen der UV und der AV wird durch eine Funktionsgerade beschrieben. Wir tragen alle Werte der UV und der AV in einem Diagramm ab und legen eine Gerade in die Datenwolke, welche den Zusammenhang zwischen UV and AV möglichst präzise beschreibt.  </p> 
+
+
+
+
+
+---
+## Die Datenwolke
+
+```{r, echo=FALSE}
+plot(Galton$parent, Galton$child,
+xlab = "Height of the mid-parent", ylab = "Height of the child",
+pch = 19, frame = FALSE)
+```
+
+---
+## Welche Funktionsgerade?
+
+<img src="media/pR3.png" style="width: 100%" border = "1px solid #555;" />
+
+---
+
+## Welche Funktionsgerade darf's denn sei?
+
+```{r, echo=TRUE, fig.height=5}
+#a = intercept, b = slope
+plot(Galton$parent, Galton$child,
+xlab = "Height of the mid-parent", ylab = "Height of the child",
+pch = 19, frame = FALSE)
+abline(a=20, b=0.75, col = "red") #<< 
+
+```
+
+---
+
+## Eine Funktionsgerade mit kleinem Fehler!
+```{r, echo=TRUE, fig.height=5}
+plot(Galton$parent, Galton$child,
+xlab = "Height of the mid-parent", ylab = "Height of the child",
+pch = 19, frame = FALSE)
+abline(a=23.94153, b=0.64629, col = "red") #<< 
+```
+
+---
+
+## Zusammenfassung der Begrifflichkeiten
+
+### - Y Achsenabschnitt: Wo beginnt die Gerade?
+### - Steigungskoeffizient: Wie steil oder flach verläuft die Gerade?
+### - Fehlerterm (Residuum): Vorhersage ist nicht perfekt, wir machen also einen Fehler.
+
+
+
+---
+
+## Zusammenfassung grafisch
+
+<img src="media/RegO.png" style="width: 100%" border = "1px solid #555;" />
+
+
+
+
+---
+
+#  Interpretation und KQ Schätzung 
+
+### Kochrezept Interpretation
+
+$$\hat{Y}=\beta_0 + \beta_1 x_1 + \epsilon$$
+
+ - $\beta_0$: Durchschnittlicher Wert der abhängigen Variable y, wenn alle anderen Einflussgrößen gleich 0 sind. (y-Achsensabschnitt oder Intercept)
+
+- $\beta_1$: Verändert sich die unabhängige Variable X um eine Einheit, so verändert sich die abhängige Variable um β1 Einheiten (Steigung)
+
+- $\epsilon$: Fehlerterm (Residuum)
+
+
+
+---
+
+### Beispiel Regressionsoutput
+
+```{r, highlight.output=c(3, 6), echo=TRUE}
+library(HistData)
+lm(child ~ parent, data = Galton)
+```
+
+---
+
+### Interpretation grafisch
+
+<img src="media/pR7.png" style="width: 100%" border = "1px solid #555;" />
+
+
+
+---
+
+### Sind die Effekte signifikant?
+
+```{r, highlight.output=c(12), echo=TRUE}
+library(HistData)
+
+model.galton<-lm(child ~ parent, data = Galton)
+summary(model.galton)
+```
+
+
+
+
+---
+class: center, middle
+
+<p style="font-size:125%;">Bei der Regression soll die Gerade den Funktionszusammenhang so gut wie möglich beschreiben. Hierfür nutzen wir den KQ Schätzer.</p> 
+
+<p style="font-size:125%;">Die Gerade wird so durch die Punktewolke gelegt, dass die Summe der quadrierten Residuen möglichst klein ist. Hierfür wird die Methode der kleinsten Quadrate (KQ Schätzer) eingesetzt, häufig auch Ordinary Least Squares (OLS) genannt.</p> 
+
+
+
+
+---
+class: center, middle
+
+
+## Beim KQ Schätzer werden die Residuen quadriert, weil …
+
+### - sich sonst positive und negative Abweichungen ausgleichen.
+
+### - stärkere Abweichungen stärker in die Berechnung einfließen sollen.
+
+### Der Erwartungswert der Residuen ist gleich 0, d.h. im Durchschnitt sind die Fehler 0: E(u)=0.
+
+
+
+---
+
+## Math Wizardy: The Slope spell
+
+```{r}
+model.galton<-lm(child ~ parent, Galton)
+model.galton$coefficients
+
+```
+
+
+$$m=\sum_{i=1}^n\frac{(x_i-\bar{x})(y_i-\bar{y})}{(x_i-\bar{x})^2}$$
+
+```{r}
+Galton %>%
+  summarise(mean_x = mean(parent),
+         mean_y = mean(child),
+         cov  = sum((parent - mean_x)*(child-mean_y)), #<<
+         var_x = sum((parent - mean_x)^2), #<<
+         slope = cov / var_x #<<
+         )
+
+```
+
+---
+
+## Math Wizardy: The Intercept spell
+
+$$t=\bar{y}-m\bar{y}$$
+
+
+```{r}
+intercept <- function(x, y, m){
+  t <- mean(y) - (m * mean(x)) #<<
+  return(t)
+}
+
+Galton_slope <- 0.6462906
+
+
+Galton_intercept <- intercept(Galton$parent, 
+                              Galton$child, 
+                              Galton_slope)
+Galton_intercept
+
+```
+
+---
+## Multivariate Analysen
+
+### - Bivariate vs. multivariate Analysen
+### - Funktionsgleichung wird mit weiteren Koeffizienten (Variablen) erweitert
+### - Ceteris paribus (d.h. unter sonst gleichen Bedingungen): Der Einfluss von X auf Y kann unter Konstanthaltung weiterer Variablen berechnet werden
+
+
+---
+
+### Spurious confounder
+
+<img src="media/pR16.png" style="width: 90%" border = "1px solid #555;" />
+
+
+
+
+---
+## Identifikation eines kausalen Effekts....
+
+- **mit Hilfe der Regression:** Berechnung eines Effekts durch Kontrolle beobachteter Variablen, d.h. Kontrolle aller Variablen die sowohl den Treatmentstatus beeinflussen und einen Einfluss auf die abhängige Variable haben.
+
+- **Hoffnung**: Nach Kontrolle der Variablen ist die Zuweisung des Treatmentstatus Klassengröße „so gut wie zufällig“ (CIA)
+
+- **Merke:** Konditionale Unabhängigkeit (conditional independence assumption, CIA): Bei der Regression muss die Annahme getroffen werden, dass nach der Kontrolle der anderen unabhängigen Variablen die Verteilung der Einheiten über die Treatment- und Kontrollgruppe in Hinblick auf die abhängige Variable so gut wie zufällig erfolgt.
+
+
+
+
+
+
+
+
+---
+
+### Wie gut ist unsere Vorhersage?
+
+```{r, highlight.output=c(17), echo=FALSE}
+library(HistData)
+
+model.galton<-lm(child ~ parent, data = Galton)
+summary(model.galton)
+```
+
+
+---
+class: center, middle
+
+# R²
+
+### Die Güte der Vorhersage der Regression. Ein kurzer Auszug zum Nachlesen.
+
+<p style="font-size:125%;">“In vielen Fällen ist die Vorhersage der Regression nicht perfekt, d.h. es werden Fehler gemacht. Es handelt dabei sich um die Differenz zwischen dem vorhergesagten Wert (der Gerade) und den beobachteten Werten.”</p> 
+
+
+
+
+
+---
+class: center, middle
+
+
+<p style="font-size:125%;">“R-Quadrat ist ein Indikator, der uns hilft zu beurteilen, wie groß der Fehler ist oder wie gut das Modell die Zielvariable (Outcome) erklärt.”</p> 
+
+<p style="font-size:125%;">“Um R-Quadrat zu verstehen, müssen wir zuerst die Gesamtvarianz (Streuung) von X und Y uns vorstellen. Nehmen wir an, dass X gar keinen Einfluss auf Y hat, dann wäre der Beta-Koeffizient und damit die Steigung der Geraden gleich 0.” </p> 
+
+<p style="font-size:125%;">“D.h. es ist egal welcher X-Wert vorliegt, wir würden immer den gleichen Y-Wert beobachten. Die Gerade wäre flach. Das einzige zur Verfügung stehende Mittel um Y vorherzusagen, wäre beispielsweise das arithmetische Mittel von X und dies ist der durchschnittliche Fehler. ” 
+</p> 
+
+ 
+
+
+---
+class: center, middle
+
+<p style="font-size:125%;">“Aber wir haben im Online Tool ja bereits eine Regressionslinie angepasst. Auf Grundlage der beobachteten Werte von X können wir Y also bis zu einem gewissen Grad erklären.” </p> 
+
+<p style="font-size:125%;">“Wir kennen demnach die Gesamtvarianz und die erklärte Varianz. Mit diesen zwei Werten können wir R² berechnen und somit den Fehler des Modells bewerten. R² ist der Anteil (%) der Varianz von Y, der durch die Regression vorhersagbar ist. Also die erklärte Varianz geteilt durch die Gesamtvarianz.”</p> 
+
+<p style="font-size:125%;">“Grafisch und an einem Beispiel lässt sich dies leichter nachvollziehen.”</p> 
+
+
+
+---
+
+### ERROR
+
+<img src="media/pR8.png" style="width: 100%" border = "1px solid #555;" />
+
+
+---
+
+### Gesamtvarianz vs. Erklärte Varianz
+
+<img src="media/pR9.png" style="width: 100%" border = "1px solid #555;" />
+
+
+
+---
+
+## Merke: 
+
+> R² ist der Anteil der erklärten Variation an der Gesamtvariation und liegt zwischen 0 und 1. 
+
+## Interpretation:
+
+ - R² = 0: Die Regression (X) trägt nichts zur Erklärung von Y bei.
+ - R² = 1: Die Regressionsfunktion erklärt Y perfekt (alle Punkte liegen genau auf der Geraden).
+ - R² = 0,2: 20% der Varianz wird durch die unabhängige(n) Variable(n) erklärt.
+
+
+
+
+
+---
+
+## Zusammenfassung
+
+### - Grundidee und Logik (multivariater) Modelle
+### - Linear regression as the working horse of the social sciences
+### - Interpretation der Koeffizienten und Modellgüte
+
+
