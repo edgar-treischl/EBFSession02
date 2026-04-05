@@ -6,7 +6,7 @@ author: "Dr. Edgar Treischl"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
-    seal: TRUE
+    seal: false
     #chakra: libs/remark-latest.min.js
     lib_dir: libs
     nature:
@@ -33,12 +33,12 @@ options(htmltools.dir.version = FALSE)
 
 ```{r best-features, echo=FALSE}
 #search
-xaringanExtra::use_search(show_icon = TRUE, position = "top-right")
+#xaringanExtra::use_search(show_icon = TRUE, position = "top-right")
 
-xaringanExtra::style_search(match_background = "black",
-                            input_background = "white",
-                            input_border = "black",
-                            match_current_background = "green")
+#xaringanExtra::style_search(match_background = "black",
+                            #input_background = "white",
+                            #input_border = "black",
+                            #match_current_background = "green")
 
 xaringanExtra::use_tachyons()
 xaringanExtra::use_tile_view()
@@ -46,7 +46,27 @@ xaringanExtra::use_webcam()
 
 ```
 
+class: center, middle
 
+# Vorlesung: Empirische Bildungsforschung
+### Session 02: Regression Bootcamp
+
+
+.large[Dr. Edgar Treischl] <br>
+.large[Last update: `r Sys.Date()`]
+
+
+<br>
+<br>
+<br>
+<p align="left" style="font-size:75%;">This presentation is licensed under a CC-BY-NC 4.0 license.
+You may copy, distribute, and use the slides in your own work, as long
+as you give attribution to the original author on each slide that you use.
+Commercial use of the contents of these slides is not allowed.</p>
+<br>
+<img align="right" src="by-nceu.png" width="150px"/>
+
+---
 
 ## Ablauf
 
