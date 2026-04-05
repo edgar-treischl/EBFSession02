@@ -1,8 +1,8 @@
-# EBF: Sitzung 1
+# EBF: Sitzung 2
 
 Lecture slides for **Empirische Bildungsforschung (EBF)** at FAU Nürnberg-Erlangen, built with [Reveal.js](https://revealjs.com) and [Vite](https://vitejs.dev).
 
-👉 **[View slides](https://edgar-treischl.github.io/EBFSession01/)**
+👉 **[View slides](https://edgar-treischl.github.io/EBFSession02/)**
 
 ## Development
 
